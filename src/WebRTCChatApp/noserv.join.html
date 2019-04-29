@@ -5,6 +5,13 @@
   <title> JOIN WebRTC channel </title>
   <link href="noserv.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <style>
+      #canvas {
+        background: #ffffff;
+        width: 600px;
+        height: 300px;
+      }
+  </style>
 </head>
 <body>
 <h2>  JOIN WebRTC channel  <span id="status"> init </span> </h2>
@@ -12,13 +19,8 @@
 <textarea id="creater-sdp" placeholder="HERE COPY & PASTE [1.CREATE Offer's SDP]"></textarea>
 <h3> 3.CREATE Participant'S SDP <button id="create">CREATE</button> </h3>
 <textarea id="joiner-sdp"></textarea>
-<h3> CHAT </h3>
-<div id="chat">
-  <div id="chat-screen-wp">
-    <div id="chat-screen"></div>
-  </div>
-  <div id="ct"><input id="msg" disabled><button id="send" disabled>send</button></div>
 </div>
+<canvas id="can"></canvas>
 <script>
 //var server       = { urls: "stun:stun.l.google.com:19302" };
 var sdpConstraints = { optional: [{RtpDataChannels: true}]  };
@@ -60,6 +62,13 @@ var sendMSG = function() {
 }
 
 var addMSG = function(msg, who) {
+  var canvas = document.getElementById("can");
+  var ctx = canvas.getContext("2d");
+  var image = new Image();
+  image.onload = function() {
+    ctx.drawImage(image, 0, 0);
+  };
+  image.src = msg;
   var wrap = $("<div>").addClass("wrap").appendTo($("#chat-screen"));
   var div  = $("<div>").addClass(who).appendTo(wrap);
   $("<span>").html(who).addClass("who").appendTo(div);
